@@ -1,15 +1,10 @@
-class Generator
-  attr_reader :length, :pool, :code
-  def initialize(length=4,pool=%w{b g r y})
-    @length = length
-    @pool = pool
-    @code = []
-    create
-  end
+module Generator
 
-  def create
-    @code = (0...length).collect{pool.sample}
+  @length = 4
+  @pool = %w{b g r y}
+  @code = []
+
+  def self.create
+    @code = (0...@length).collect{@pool.sample}
   end
 end
-
-sequence = Generator.new(4)
