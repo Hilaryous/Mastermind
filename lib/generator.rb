@@ -1,4 +1,3 @@
-require_relative '../lib/attempt'
 class Generator
   attr_reader :length, :pool, :code
   def initialize(length=4,pool=%w{b g r y})
@@ -14,4 +13,3 @@ class Generator
 end
 
 sequence = Generator.new(4)
-puts sequence.create

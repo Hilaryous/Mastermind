@@ -3,28 +3,28 @@ require_relative '../lib/generator'
 require 'pry'
 class Matcher
   def initialize
-    @sequence ||= Generator.new.create
     @count = 0
-    # @sequence.create
-    # @attempt ||= Attempt.new('rrby')
-    # @attempt.input
+    @sequence ||= Generator.new
   end
 
   def checker(attempt, sequence)
-    attempt = attempt.input
-
-    attempt.select { |letter| @sequence.include?(letter)}.length
+    seq = sequence.dup
+    attempt.each do |a|
+      index = seq.index(a)
+      seq.slice!(index) if index
+    end
+    count = sequence.length - seq.length
   end
 
   def checker_index(attempt, sequence)
-    attempt = attempt.input
+    count = 0
 
-    0.upto(attempt.length-1) do |index|
-      if attempt[index] == @sequence[index]
-        @count += 1
+    attempt.length.times do |index|
+      if attempt[index] == sequence[index]
+        count += 1
       end
     end
-    @count
+    @count = count
   end
 
   def full_match
