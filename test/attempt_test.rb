@@ -2,24 +2,15 @@ gem 'minitest', '~> 5.2'
 require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../lib/attempt'
+require 'pry'
 
 class AttemptTest < Minitest::Test
-  attr_reader :attempt
-  def setup
-    input = 'rbgy'
-    @attempt = Attempt.new(input)
+  def test_it_formats
+    assert_equal ["r","b","g","y"], Attempt.format('rbgy')
   end
 
-  def test_it_exists
-    assert attempt
+  def test_it_validates
+    result = Attempt.valid?('rbgyr', 4)
+    assert_equal false, result
   end
-
-  def test_attempt_is_an_array
-    assert_equal false, attempt.input.empty?
-  end
-
-  def test_attempt_has_four_elements
-    assert_equal 4, attempt.input.length
-  end
-
 end

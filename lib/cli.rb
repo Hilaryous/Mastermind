@@ -1,14 +1,12 @@
 require_relative '../lib/game_master'
-require 'pry'
 class CLI
-  attr_reader :command, :parameters, :turn
-  def self.start
+  attr_reader :command
+  def self.run
     CLI.new.start
   end
 
   def initialize
     @command = ""
-    @parameters = ""
     @input_count = []
   end
 
@@ -36,19 +34,26 @@ class CLI
       when command = 'p'
       print "I have generated a beginner sequence with four elements made up of: \n(r)ed, (g)reen, (b)lue, and (y)ellow. \nUse (q)uit at any time to end the game. What is your guess?"
       game = GameMaster.new
-      @start_time = Time.new
       input = gets.chomp
-      @input_count << input
+      @start_time = Time.new
       while game.match?(input) == false
+        break if input == 'q'
         game.turn(input)
-        puts "#{input.upcase} has #{game.elements} of the correct elements with #{game.positions} in the correct positions. \nYou're on guess number: #{@input_count.length}"
+        @input_count << input
+        puts "#{input.upcase} has #{game.elements} of the correct elements with #{game.positions} in the correct positions. \nYou're on guess number: #{@input_count.length}" #unless game.turn(input) == false
+        # puts "Invalid input" unless game.turn(input)
         puts "Try again!"
         input = gets.chomp unless game.match?(input)
         break if game.match?(input)
+        # if @input_count.length >8
+        #   break
+        #   puts "You have run out of turns"
+        # end
       end
         @total_time = Time.new - @start_time
         @input_count << input
-        puts "Congratulations! You guessed the sequence #{input.upcase} in #{@input_count.length} guesses over #{@total_time} seconds. Do you want to (p)lay again or (q)uit?"
+        puts "Congratulations! You guessed the sequence #{input.upcase} in #{@input_count.length} guesses over #{@total_time} seconds." unless input == 'q'
+        puts "Do you want to (p)lay again or (q)uit?" unless input == 'q'
     end
   end
 end

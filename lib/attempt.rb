@@ -5,9 +5,9 @@ module Attempt
 
   def self.valid?(input, expected_length)
     if input.length != expected_length
-      puts "Invalid guess, try again."
+      return false
     else
-      Attempt.format(input)
+      true
     end
   end
 end
